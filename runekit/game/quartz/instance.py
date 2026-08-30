@@ -193,7 +193,7 @@ class QuartzGameInstance(PsUtilNetStat, GameInstance):
             
         out = cgimageref_to_image(imgref)
         if out.size != (w, h):
-            out.resize((w, h), Image.NEAREST)
+            out = out.resize((w, h), Image.NEAREST)
         return out
 
     def get_overlay_area(self) -> QGraphicsItem:
