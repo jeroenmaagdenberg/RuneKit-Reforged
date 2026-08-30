@@ -175,7 +175,6 @@ class QuartzGameInstance(PsUtilNetStat, GameInstance):
 
         out = cgimageref_to_image(imgref)
         
-
         self.__game_last_grab = time.monotonic()
         self.__game_last_image = out
         return out
@@ -185,14 +184,20 @@ class QuartzGameInstance(PsUtilNetStat, GameInstance):
             Quartz.CGRect(Quartz.CGPoint(x, y), Quartz.CGSize(w, h)),
             Quartz.kCGWindowListOptionAll,
             Quartz.kCGNullWindowID,
-            Quartz.kCGWindowImageDefault,
+            Quartz.kCGWindowImageNominalResolution,
         )
+        
+        if not imgref:
+            self.manager.request_accessibility_popup.emit()
+            raise NoCapturePermission
+            
         out = cgimageref_to_image(imgref)
-        return out.resize((w, h), Image.NEAREST)
+        if out.size != (w, h):
+            out.resize((w, h), Image.NEAREST)
+        return out
 
     def get_overlay_area(self) -> QGraphicsItem:
         return self.overlay
-
 
 class AXAPIError(Exception):
     mapping = {
