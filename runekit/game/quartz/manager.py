@@ -1,4 +1,5 @@
 import time
+import logging
 from functools import reduce
 from typing import List, Dict, Optional, Union
 
@@ -33,8 +34,11 @@ class QuartzGameManager(GameManager):
                 ApplicationServices.kAXTrustedCheckOptionPrompt: True,
             }
         )
-        while not ApplicationServices.AXIsProcessTrusted():
-            time.sleep(0.1)
+        if not ApplicationServices.AXIsProcessTrusted():
+            logging.warning(
+                "Accessibility permission not granted. Grant it to your terminal, "
+                "then restart RuneKit."
+            )
 
         self._setup_overlay()
 
@@ -58,13 +62,16 @@ class QuartzGameManager(GameManager):
         Quartz.CFRunLoopAddSource(
             Quartz.CFRunLoopGetCurrent(), source, Quartz.kCFRunLoopCommonModes
         )
+        if self._tap is None:
+            logging.warning("Could not create event tap. Alt+1 will not work.")
+            return
+        Quartz.CGEventTapEnable(self._tap, True)
 
     def _setup_overlay(self):
         self.overlay = DesktopWideOverlay()
 
         def start():
             self.overlay.show()
-            self.overlay.check_compatibility()
 
         # Seems like QGraphicsView has a delay before applying stylesheet
         # Put some delay to allow it to initialize and not flash

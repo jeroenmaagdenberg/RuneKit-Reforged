@@ -165,18 +165,15 @@ class QuartzGameInstance(PsUtilNetStat, GameInstance):
         imgref = Quartz.CGWindowListCreateImageFromArray(
             Quartz.CGRectNull,
             [self.wid],
-            Quartz.kCGWindowImageBoundsIgnoreFraming,
+            Quartz.kCGWindowImageBoundsIgnoreFraming
+            | Quartz.kCGWindowImageNominalResolution,
         )
         if not imgref:
             self.manager.request_accessibility_popup.emit()
             raise NoCapturePermission
 
         out = cgimageref_to_image(imgref)
-        scale = self.get_scaling()
-        if scale > 1:
-            out = out.resize(
-                (int(out.width / scale), int(out.height / scale)), Image.NEAREST
-            )
+        
 
         self.__game_last_grab = time.monotonic()
         self.__game_last_image = out

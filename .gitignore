@@ -11,3 +11,4 @@ runekit/_resources.py
 upstream-runekit/
 Prompts/
 .claude/
+.DS_Store
