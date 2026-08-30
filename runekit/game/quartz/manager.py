@@ -58,10 +58,16 @@ class QuartzGameManager(GameManager):
             self._on_input,
             None,
         )
+
+        if self._tap is None:
+            logging.warning("Could not create event tap. Alt+1 will not work.")
+            return
+        
         source = Quartz.CFMachPortCreateRunLoopSource(None, self._tap, 0)
         Quartz.CFRunLoopAddSource(
             Quartz.CFRunLoopGetCurrent(), source, Quartz.kCFRunLoopCommonModes
         )
+        
         if self._tap is None:
             logging.warning("Could not create event tap. Alt+1 will not work.")
             return
