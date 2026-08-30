@@ -19,7 +19,7 @@ from ..psutil_mixins import PsUtilNetStat
 if TYPE_CHECKING:
     from .manager import QuartzGameManager
 
-_debug_dump_file = False
+_debug_dump_file = True
 logger = logging.getLogger(__name__)
 
 
@@ -43,6 +43,7 @@ def cgimageref_to_image(imgref) -> Image:
     py_buf.seek(0)
 
     out = Image.open(py_buf, formats=("TIFF",))
+    out.load()
 
     if _debug_dump_file:
         out.save(os.path.join(tempfile.gettempdir(), "game.bmp"))
