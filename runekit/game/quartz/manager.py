@@ -1,4 +1,3 @@
-import time
 import logging
 from functools import reduce
 from typing import List, Dict, Optional, Union
@@ -13,6 +12,8 @@ from .instance import QuartzGameInstance
 from runekit.game.overlay import DesktopWideOverlay
 from ..instance import GameInstance
 from ..manager import GameManager
+
+logger = logging.getLogger(__name__)
 
 has_prompted_accessibility = False
 
@@ -35,7 +36,7 @@ class QuartzGameManager(GameManager):
             }
         )
         if not ApplicationServices.AXIsProcessTrusted():
-            logging.warning(
+            logger.warning(
                 "Accessibility permission not granted. Grant it to your terminal, "
                 "then restart RuneKit."
             )
@@ -60,7 +61,7 @@ class QuartzGameManager(GameManager):
         )
 
         if self._tap is None:
-            logging.warning("Could not create event tap. Alt+1 will not work.")
+            logger.warning("Could not create event tap. Alt+1 will not work.")
             return
 
         source = Quartz.CFMachPortCreateRunLoopSource(None, self._tap, 0)
