@@ -19,7 +19,7 @@ from ..psutil_mixins import PsUtilNetStat
 if TYPE_CHECKING:
     from .manager import QuartzGameManager
 
-_debug_dump_file = True
+_debug_dump_file = False
 logger = logging.getLogger(__name__)
 
 
