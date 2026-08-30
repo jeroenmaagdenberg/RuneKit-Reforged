@@ -120,7 +120,8 @@ class AppStore(QObject):
 
     def load_default_apps(self):
         def on_progress(value):
-            if value != self.app_progress.maximum():
+            progress = getattr(self, "app_progress", None)
+            if progress is None or value != progress.maximum():
                 return
 
             self.settings.setValue("apps/_meta/isDefaultLoaded", True)

@@ -6,7 +6,7 @@ import sys
 import traceback
 
 import click
-from PySide6.QtCore import QSettings, QStandardPaths, Qt, QTimer
+from PySide6.QtCore import QCoreApplication, QSettings, QStandardPaths, Qt, QTimer
 from PySide6.QtWidgets import (
     QApplication,
     QMessageBox,
@@ -16,6 +16,7 @@ import runekit._resources
 from runekit import browser
 from runekit.game import get_platform_manager
 from runekit.host import Host
+
 
 
 def setup_logging():
@@ -58,6 +59,10 @@ def setup_logging():
 @click.argument("qt_args", nargs=-1, type=click.UNPROCESSED)
 @click.argument("app_url", required=False)
 def main(app_url, game_index, qt_args):
+    QCoreApplication.setOrganizationName("cupco.de")
+    QCoreApplication.setOrganizationDomain("cupco.de")
+    QCoreApplication.setApplicationName("RuneKit")
+    
     setup_logging()
 
     logging.info("Starting QtWebEngine")
@@ -65,9 +70,6 @@ def main(app_url, game_index, qt_args):
 
     app = QApplication(["runekit", *qt_args])
     app.setQuitOnLastWindowClosed(False)
-    app.setOrganizationName("cupco.de")
-    app.setOrganizationDomain("cupco.de")
-    app.setApplicationName("RuneKit")
 
     signal.signal(signal.SIGINT, lambda no, frame: app.quit())
 
