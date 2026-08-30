@@ -62,16 +62,14 @@ class QuartzGameManager(GameManager):
         if self._tap is None:
             logging.warning("Could not create event tap. Alt+1 will not work.")
             return
-        
+
         source = Quartz.CFMachPortCreateRunLoopSource(None, self._tap, 0)
         Quartz.CFRunLoopAddSource(
             Quartz.CFRunLoopGetCurrent(), source, Quartz.kCFRunLoopCommonModes
         )
-        
-        if self._tap is None:
-            logging.warning("Could not create event tap. Alt+1 will not work.")
-            return
+
         Quartz.CGEventTapEnable(self._tap, True)
+
 
     def _setup_overlay(self):
         self.overlay = DesktopWideOverlay()
