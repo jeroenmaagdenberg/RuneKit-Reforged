@@ -64,7 +64,7 @@ class QuartzGameManager(GameManager):
         )
         if self._tap is None:
             logging.warning("Could not create event tap. Alt+1 will not work.")
-            return
+            return
         Quartz.CGEventTapEnable(self._tap, True)
 
     def _setup_overlay(self):
